@@ -20,7 +20,10 @@ module Codebreaker
         expect(code.instance_variable_get(:@code)).to eq('1214')
       end
 
-      it 'calls secret_code method if new method called without arguments'
+      it 'calls secret_code method if new method called without arguments' do   
+        s_code = Code.new
+        expect(s_code.send(:secret_code)).to eq(s_code.to_s) 
+      end
     end
 
     context '#==' do
@@ -124,6 +127,36 @@ module Codebreaker
 
       it 'returns right code' do 
         expect(code.to_s). to eq('1214')
+      end
+    end
+
+    context '#secret_code' do 
+      let(:s_code) { Code.new }
+
+      it 'returns string' do 
+        expect(s_code.send(:secret_code)).to be_a(String)
+      end
+
+      it 'returns code with 4 elements' do 
+        expect(s_code.send(:secret_code).size).to eq(4)
+      end
+    end
+
+    context '#index_converter' do 
+      it 'returns argument if it is a Fixnum' do 
+        expect(code.send(:index_converter, 2)).to eq(2) 
+      end
+
+      it "returns argument's index if argument is a string" do 
+        expect(code.send(:index_converter, "2")).to eq(1)
+      end
+
+      it 'raises error if index is bigger than code size' do 
+        expect{ code.send(:index_converter, 8) }.to raise_error(IndexError)
+      end
+
+      it 'raises error if index is less than zero' do 
+        expect{ code.send(:index_converter, -2) }.to raise_error(IndexError)
       end
     end
   end

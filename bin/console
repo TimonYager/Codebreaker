@@ -50,10 +50,7 @@ loop do
     else
       answer = @game.guess(input)
       puts "Answer: #{answer}"
-      if answer == '++++'
-        @game.won = true
-        break
-      end
+      break if @game.won?
     end
   end
 

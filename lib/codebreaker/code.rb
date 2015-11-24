@@ -55,14 +55,14 @@ class Code
 
   def secret_code
     result = ''
-    LENGTH.times { result << rand(1..6).to_s }
+    @code ? result = @code : LENGTH.times { result << rand(1..6).to_s }
     result
   end
 
   def index_converter(index)
     case index.class.to_s
     when "Fixnum"
-      raise IndexError, "index can't be bigger than #{LENGTH - 1}" unless index < LENGTH
+      raise IndexError, "index can't be bigger than #{LENGTH - 1}" unless index < LENGTH && index >= 0
       index
     when "String"
       raise IndexError, "member #{index} doesn't exist in code" unless @code.include?(index)

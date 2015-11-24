@@ -1,7 +1,6 @@
 require_relative './code'
 
 class Game
-  attr_accessor :won
   attr_reader :chances, :score, :level
 
   def initialize(level = 'easy')
@@ -39,7 +38,9 @@ class Game
   def guess(code)
     @guess = Code.new(code)
     @chances -= 1
-    check(@guess)
+    answer = check(@guess)
+    @won = true if answer == '++++'
+    answer
   end
 
   def hint
@@ -57,11 +58,11 @@ class Game
 
   def save_result(name)
     raise ArgumentError, 'player should be a string' unless name.is_a?(String)
-    f = File.open("../lib/history", 'a')
+    f = File.open("../lib/history/#{name.downcase}", 'a')
     datetime = DateTime.now.strftime('%F %R')
     result = won? ? "won" : "lose"
     chances_used = 30 - @coef - @chances
-    f.puts  "#{name} \t#{@score} points \t#{chances_used} chances was used \t#{result} \t#{datetime}"
+    f.puts  "#{@score} \t#{chances_used} \t#{result} \t#{datetime}"
     f.close
   end
 
@@ -88,7 +89,7 @@ class Game
     when 'easy'   then @chances = 20
     when 'medium' then @chances = 15
     when 'hard'   then @chances = 10
-    else raise ArgumentError, 'level should be \'easy\', \'medium\' or \'hard\''
+    else raise ArgumentError, "level should be 'easy', 'medium' or 'hard'"
     end
     @level_points = 900 / @chances
     @coef = 30 - @chances
