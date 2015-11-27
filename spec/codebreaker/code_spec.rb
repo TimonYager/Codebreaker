@@ -19,11 +19,6 @@ module Codebreaker
       it 'saves argument as code' do 
         expect(code.instance_variable_get(:@code)).to eq('1214')
       end
-
-      it 'calls secret_code method if new method called without arguments' do   
-        s_code = Code.new
-        expect(s_code.send(:secret_code)).to eq(s_code.to_s) 
-      end
     end
 
     context '#==' do
@@ -63,8 +58,7 @@ module Codebreaker
     context '#delete' do 
       let(:code_with_zeros) { Code.new('3125') }
       before do
-        code_with_zeros[1] = '0'
-        code_with_zeros[3] = '0'
+        code_with_zeros[1] = code_with_zeros[3] = '0'
         code_with_zeros.delete('0')
       end
 

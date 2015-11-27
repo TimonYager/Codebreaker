@@ -22,11 +22,11 @@ class ConsoleInterface
 
       case input
       when 'e'
-        @game = Game.new('easy')
+        @game = Codebreaker::Game.new('easy')
       when 'm'
-        @game = Game.new('medium')
+        @game = Codebreaker::Game.new('medium')
       when 'h'
-        @game = Game.new('hard')
+        @game = Codebreaker::Game.new('hard')
       end
       break
     end
@@ -39,30 +39,6 @@ class ConsoleInterface
       puts "You won. Total score: #{@game.score}"
     else
       puts "You lose."
-    end
-  end
-
-  def save_result
-    print "Enter your name: "
-    input = gets.chomp
-    @game.save_result(input)
-    puts "Result is saved."
-  end
-
-  def play_again
-    puts "Press 'a' if you want to play again."
-    puts "Press 'e' if you want to exit."
-    print "Your choise: "
-    input = gets.chomp
-
-    case input
-    when 'a'
-      next
-    when 'e'
-      exit
-    else
-      puts "Wrong input. Game is over."
-      exit
     end
   end
 
@@ -96,5 +72,27 @@ class ConsoleInterface
 
       play_again
     end
+  end
+
+  def play_again
+    puts "Press 'a' if you want to play again."
+    puts "Press 'e' if you want to exit."
+    print "Your choise: "
+    input = gets.chomp
+
+    case input
+    when 'a' then play
+    when 'e' then exit
+    else 
+      puts "Wrong input. Game is over."
+      exit
+    end
+  end
+
+  def save_result
+    print "Enter your name: "
+    input = gets.chomp
+    @game.save_result(input)
+    puts "Result is saved."
   end
 end
